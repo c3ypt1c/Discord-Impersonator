@@ -2,9 +2,18 @@ from selenium import webdriver
 import os
 import time #For timing
 
-import Login
-if not Login.changed: del Login
-
+try:
+    import Login
+    if not Login.changed: del Login
+except:
+    loginF = open ( "Login.py", "wb" ) #Create login file if dones't exist
+    loginF.write("""
+email = "example@example.com"
+password = "password"
+changed = False
+""".encode())
+    loginF.close()
+    
 print ( "This path:", os.getcwd() )
 driver = webdriver.Firefox(os.getcwd());
 
