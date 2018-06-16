@@ -2,17 +2,20 @@ from selenium import webdriver
 import os
 import time #For timing
 
+LoginConfigChanged = False
 try:
     import Login
-    if not Login.changed: del Login
+    LoginConfigChanged = Login.changed
+    if not Login.changed:
+        del Login
 except:
-    loginF = open ( "Login.py", "wb" ) #Create login file if dones't exist
-    loginF.write("""
-email = "example@example.com"
-password = "password"
-changed = False
-""".encode())
-    loginF.close()
+    f = open( "LoginTemplate.txt", "rb" )
+    fd = f.read()
+    f.close()
+    f = open( "Login.py", "wb" )
+    f.write(fd)
+    f.close()
+    del f
     
 print ( "This path:", os.getcwd() )
 driver = webdriver.Firefox(os.getcwd());
