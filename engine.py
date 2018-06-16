@@ -39,8 +39,14 @@ class URL:
     class discord:
         discord = "https://discordapp.com/"
         login = "https://discordapp.com/login"
-
-
+        
+    try:
+        import PrivateChannel
+    except:
+        f = open ( "PrivateChannel", "wb" )
+        f.write(b"")
+        f.close()
+        import PrivateChannel
 
 print ( "Loading driver" )
 driver = webdriver.Firefox(os.getcwd());
@@ -48,7 +54,7 @@ print ( "Loading", URL.discord.discord )
 driver.get(URL.discord.discord)
 print ( "Loading", URL.discord.login )
 driver.get(URL.discord.login)
-print ( "Finding elements" )
+print ( "Finding elements..." )
 root = driver.find_element_by_id("app-mount")
 root = root.find_elements_by_class_name("platform-web")[0]
 root = root.find_elements_by_xpath("div/div/div")[0]
@@ -74,3 +80,8 @@ else:
     Methods.HumanTyping(login, input("Password> ") )
 
 accep.click()
+print ( "Waiting for Discord..." )
+time.sleep(10) #TODO: Find progress!!!!!!
+
+print ( "Going to dedicated channel..." )
+driver.get(URL.PrivateChannel.URL)
