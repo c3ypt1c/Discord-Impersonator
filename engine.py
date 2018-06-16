@@ -101,7 +101,8 @@ pastData = set ( driver.find_elements_by_class_name("markup") )
 print ( "Awaiting Commands..." )
 outputBox = driver.find_elements_by_css_selector("textarea")[0]
 
-while True:
+run = True
+while run:
     try:
         try:
             driver.find_elements_by_class_name("new-messages-bar")[0].click()
@@ -145,9 +146,9 @@ while True:
                                 else:
                                     Methods.SendMessage(outputBox, "What? I can't do anything with an empty input, bro.")
                             elif command == "say":
-                                if len(command) > ( len("say ") + 1) and command.count(" ") > 0:
+                                if len(command) > ( len("say ") + 1) and str(command).count(" ") > 0:
                                     if userAdmin:
-                                        Methods.SendMessage(outputBox, command[4:])
+                                        Methods.SendMessage(outputBox, string(command[4:]))
                                     else:
                                         Methods.SendMessage(outputBox, "Nice try but you have to be my bro" )
                             elif command == "who is your creator" or command == "who is your maker":
@@ -159,7 +160,7 @@ while True:
                                 if userAdmin:
                                     Methods.SendMessage(outputBox, "Bye! It was cool to be alive for a while :')")
                                     print ( "Shutting down" )
-                                    break
+                                    run = False
                                 else:
                                     Methods.SendMessage(outputBox, "Nice try but you have to be my bro" )
                             else:
