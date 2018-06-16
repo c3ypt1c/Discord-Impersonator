@@ -1,5 +1,6 @@
 from selenium import webdriver
 from random import random
+from selenium.webdriver.common.keys import Keys
 import os
 import time #For timing
 
@@ -34,6 +35,11 @@ class Methods:
         for x in text:
             element.send_keys(x);
             time.sleep(random()*scale*avoidBotBehaviour)
+            
+    def SendMessage(element, message):
+        print ( "Sending message:", message )
+        Methods.HumanTyping(element, message+Keys.RETURN, scale=0.1)
+
         
 class URL:
     class discord:
@@ -85,3 +91,58 @@ time.sleep(10) #TODO: Find progress!!!!!!
 
 print ( "Going to dedicated channel..." )
 driver.get(URL.PrivateChannel.URL)
+
+print ( "Waiting for Discord..." )
+time.sleep(10)
+
+print ( "Gathering past data" )
+pastData = set ( driver.find_elements_by_class_name("markup") )
+
+print ( "Awaiting Commands..." )
+outputBox = driver.find_elements_by_css_selector("textarea")[0]
+
+while True:
+    
+    try:
+        driver.find_elements_by_class_name("new-messages-bar")[0].click()
+    except:
+        pass
+    
+    newData = set ( driver.find_elements_by_class_name("markup") )
+    if not ( newData == pastData ):
+        elementsToPharse = [ x for x in newData - pastData ]
+        pastData = newData
+        for x in elementsToPharse:
+            body = x.find_elements_by_xpath("../..")
+            message = x.text
+            try:
+                Lastuser = body[0].find_element_by_css_selector("h2").find_element_by_class_name("username-wrapper").text
+            except:
+                pass
+            print ( "New message("+Lastuser+"):", message )
+            if len(message) > 0:
+                if message[0] == "!":
+                    userAdmin = Lastuser == "Cryptic" or Lastuser == "c3ypt1c"
+                    command = message[1:].lower()
+                    print ( "Interpreting command:", command )
+                    if command == "help":
+                        if not userAdmin:
+                            Methods.SendMessage(outputBox, "Help:")
+                            Methods.SendMessage(outputBox, " - !help Displays this" )
+                            Methods.SendMessage(outputBox, "More will come soon!" )
+                        else:
+                            Methods.SendMessage(outputBox, "I- I thought you know everything about me *cries*" )
+                            time.sleep(0.2)
+                            Methods.SendMessage(outputBox, "Jk jk xD")
+                    if command == "":
+                        if not userAdmin:
+                            Methods.SendMessage(outputBox, "What? I can't do anything with an empty input *grumble*")
+                        else:
+                            Methods.SendMessage(outputBox, "What? I can't do anything with an empty input, master")
+                    if command == "who is your creator" or command == "who is your maker":
+                        if userAdmin:
+                            Methods.SendMessage(outputBox, "You, master.")
+                        else:
+                            Methods.SendMessage(outputBox, "@c3ypt1c#5346, of course!")
+
+    time.sleep(0.5)
