@@ -102,47 +102,68 @@ print ( "Awaiting Commands..." )
 outputBox = driver.find_elements_by_css_selector("textarea")[0]
 
 while True:
-    
     try:
-        driver.find_elements_by_class_name("new-messages-bar")[0].click()
-    except:
-        pass
+        try:
+            driver.find_elements_by_class_name("new-messages-bar")[0].click()
+        except:
+            pass
     
-    newData = set ( driver.find_elements_by_class_name("markup") )
-    if not ( newData == pastData ):
-        elementsToPharse = [ x for x in newData - pastData ]
-        pastData = newData
-        for x in elementsToPharse:
-            body = x.find_elements_by_xpath("../..")
-            message = x.text
-            try:
-                Lastuser = body[0].find_element_by_css_selector("h2").find_element_by_class_name("username-wrapper").text
-            except:
-                pass
-            print ( "New message("+Lastuser+"):", message )
-            if len(message) > 0:
-                if message[0] == "!":
-                    userAdmin = Lastuser == "Cryptic" or Lastuser == "c3ypt1c"
-                    command = message[1:].lower()
-                    print ( "Interpreting command:", command )
-                    if command == "help":
-                        if not userAdmin:
-                            Methods.SendMessage(outputBox, "Help:")
-                            Methods.SendMessage(outputBox, " - !help Displays this" )
-                            Methods.SendMessage(outputBox, "More will come soon!" )
-                        else:
-                            Methods.SendMessage(outputBox, "I- I thought you know everything about me *cries*" )
-                            time.sleep(0.2)
-                            Methods.SendMessage(outputBox, "Jk jk xD")
-                    if command == "":
-                        if not userAdmin:
-                            Methods.SendMessage(outputBox, "What? I can't do anything with an empty input *grumble*")
-                        else:
-                            Methods.SendMessage(outputBox, "What? I can't do anything with an empty input, master")
-                    if command == "who is your creator" or command == "who is your maker":
-                        if userAdmin:
-                            Methods.SendMessage(outputBox, "You, master.")
-                        else:
-                            Methods.SendMessage(outputBox, "@c3ypt1c#5346, of course!")
-
+        newData = set ( driver.find_elements_by_class_name("markup") )
+        if not ( newData == pastData ):
+            elementsToPharse = [ x for x in newData - pastData ]
+            pastData = newData
+            for x in elementsToPharse:
+                body = x.find_elements_by_xpath("../..")
+                message = x.text
+                try:
+                    Lastuser = body[0].find_element_by_css_selector("h2").find_element_by_class_name("username-wrapper").text
+                except:
+                    pass
+                
+                try:
+                    print ( "New message("+Lastuser+"):", message )
+                    if len(message) > 0:
+                        if message[0] == "!":
+                            userAdmin = Lastuser == "Cryptic" or Lastuser == "c3ypt1c"
+                            command = message[1:].lower()
+                            print ( "Interpreting command:", command )
+                            if command == "help":
+                                if not userAdmin:
+                                    Methods.SendMessage(outputBox, "Help:")
+                                    Methods.SendMessage(outputBox, " - !help Displays this" )
+                                    Methods.SendMessage(outputBox, "More will come soon!" )
+                                else:
+                                    Methods.SendMessage(outputBox, "I- I thought you know everything about me bro *cries*..." )
+                                    time.sleep(0.5)
+                                    Methods.SendMessage(outputBox, "Jk jk xD")
+                            elif command == "":
+                                if not userAdmin:
+                                    Methods.SendMessage(outputBox, "What? I can't do anything with an empty input *grumble grumble*")
+                                else:
+                                    Methods.SendMessage(outputBox, "What? I can't do anything with an empty input, bro.")
+                            elif command == "say":
+                                if len(command) > ( len("say ") + 1) and command.count(" ") > 0:
+                                    if userAdmin:
+                                        Methods.SendMessage(outputBox, command[4:])
+                                    else:
+                                        Methods.SendMessage(outputBox, "Nice try but you have to be my bro" )
+                            elif command == "who is your creator" or command == "who is your maker":
+                                if userAdmin:
+                                    Methods.SendMessage(outputBox, "You, bro.")
+                                else:
+                                    Methods.SendMessage(outputBox, "@c3ypt1c#5346, of course!")
+                            else:
+                                if not userAdmin:
+                                    Methods.SendMessage(outputBox, "I don't understand what you're saying...")
+                                else:
+                                    Methods.SendMessage(outputBox, "You're not making any sense, bro :thinking:")
+                except UnicodeEncodeError:
+                    print ( "UnicodeEncodeError occured" )
+                    Methods.SendMessage(outputBox, "UnicodeEncodeError occured! @c3ypt1c#5346")
+    except:
+        print ( "Some kind of fatal error occured" )
+        Methods.SendMessage(outputBox, "Unknown error occured! Partially restarting! @c3ypt1c#5346")
+        pastData = set ( driver.find_elements_by_class_name("markup") )
+        newData = pastData
     time.sleep(0.5)
+        
