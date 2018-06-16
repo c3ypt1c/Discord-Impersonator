@@ -136,6 +136,9 @@ while True:
                                     Methods.SendMessage(outputBox, "I- I thought you know everything about me bro *cries*..." )
                                     time.sleep(0.5)
                                     Methods.SendMessage(outputBox, "Jk jk xD")
+                                    Methods.SendMessage(outputBox, "Help:")
+                                    Methods.SendMessage(outputBox, " - !help Displays this" )
+                                    Methods.SendMessage(outputBox, "More will come soon!" )
                             elif command == "":
                                 if not userAdmin:
                                     Methods.SendMessage(outputBox, "What? I can't do anything with an empty input *grumble grumble*")
@@ -152,6 +155,13 @@ while True:
                                     Methods.SendMessage(outputBox, "You, bro.")
                                 else:
                                     Methods.SendMessage(outputBox, "@c3ypt1c#5346, of course!")
+                            elif command == "shutdown":
+                                if userAdmin:
+                                    Methods.SendMessage(outputBox, "Bye! It was cool to be alive for a while :')")
+                                    print ( "Shutting down" )
+                                    break
+                                else:
+                                    Methods.SendMessage(outputBox, "Nice try but you have to be my bro" )
                             else:
                                 if not userAdmin:
                                     Methods.SendMessage(outputBox, "I don't understand what you're saying...")
@@ -167,3 +177,5 @@ while True:
         newData = pastData
     time.sleep(0.5)
         
+driver.close()
+quit()
