@@ -6,9 +6,12 @@ import os #For paths and files
 import time #For timing
 import threading #For command stacks
 
-print ( "This path:", os.getcwd() )
-print ( "Creating classes and function..." )
+##Importing natural language pharse here
 
+print ( "This path:", os.getcwd() )#
+
+print ( "Creating classes and functions..." )
+##Login config here
 LoginConfigChanged = False
 try:
     import Login
@@ -28,6 +31,7 @@ except:
     f.close()
     del f
 
+#Loading basic methods for the bot to use
 class Methods:
     global avoidBotBehaviour
     avoidBotBehaviour = 1 #Set to 1 or 0 
@@ -42,12 +46,12 @@ class Methods:
         print ( "Sending message:", message )
         Methods.HumanTyping(element, message+Keys.RETURN, scale=0.1)
 
-        
+##Useful URLs for the bot to use
 class URL:
     class discord:
         discord = "https://discordapp.com/"
         login = "https://discordapp.com/login"
-        
+    ##Need sto be done like this to protect my identity (Ugly I know)
     try:
         import PrivateChannel
     except:
@@ -56,6 +60,7 @@ class URL:
         f.close()
         import PrivateChannel
 
+##Actuallying logging in and getting to the desired chatroom
 print ( "Loading driver" )
 driver = webdriver.Firefox(os.getcwd());
 print ( "Loading", URL.discord.discord )
@@ -63,20 +68,21 @@ driver.get(URL.discord.discord)
 print ( "Loading", URL.discord.login )
 driver.get(URL.discord.login)
 print ( "Finding elements..." )
-root = driver.find_element_by_id("app-mount")
+root = driver.find_element_by_id("app-mount") ##Finding the first element with an id
 root = root.find_elements_by_class_name("platform-web")[0]
 root = root.find_elements_by_xpath("div/div/div")[0]
 root = root.find_elements_by_xpath("form/div")[0]
 root = root.find_elements_by_xpath("*")[2]
 root = root.find_elements_by_xpath("*")
-login = root[0].find_elements_by_xpath("div/input")[0]
-passw = root[1].find_elements_by_xpath("div/input")[0]
-accep = root[3]
+login = root[0].find_elements_by_xpath("div/input")[0] ##Login box
+passw = root[1].find_elements_by_xpath("div/input")[0] ##Password box
+accep = root[3] ##Accept button
 
 print ( "Injecting login data..." )
-if not LoginConfigChanged:
+if not LoginConfigChanged: ##these need tp be filled in to actually work
     print ( "The following needs your input:" )
 
+##puts in all thedata
 if LoginConfigChanged:
     Methods.HumanTyping(login, Login.email)
 else:
@@ -87,6 +93,7 @@ if LoginConfigChanged:
 else:
     Methods.HumanTyping(login, input("Password> ") )
 
+##clicks log in
 accep.click()
 print ( "Waiting for Discord..." )
 time.sleep(10) #TODO: Find progress!!!!!!
@@ -104,7 +111,7 @@ print ( "Awaiting Commands..." )
 outputBox = driver.find_elements_by_css_selector("textarea")[0]
 
 
-
+##Bot fully loaded
 run = True
 while run:
     try:
