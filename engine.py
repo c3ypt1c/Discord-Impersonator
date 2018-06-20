@@ -107,8 +107,28 @@ driver.get(URL.PrivateChannel.URL)
 print ( "Waiting for Discord..." )
 time.sleep(10) #TODO: Find progress!!!!!!
 
-print ( "Gathering past data..." )
-pastData = set ( driver.find_elements_by_class_name("markup") )
+print ( "Generating threads..." )
+##Generates the thread that will create stacks and keeps track of them
+CommandStack = [] ##Array of dictionaries
+CommandStackLock = threading.Lock() #The lock for the array
+def createStacks(driver,talkMethod=None,sleepTime=0.5):
+    global CommandStack, CommandStackLock #We need them globally anyway
+    if talkMethod is None:
+        talkMethod = Methods.nothing
+        
+    while True:
+        for x in driver.find_elements_by_class_name("markup"):
+            body = x.find_elements_by_xpath("../..")
+            message = x.text
+            try:
+                Lastuser = body[0].find_element_by_css_selector("h2").find_element_by_class_name("username-wrapper").text
+            except:
+                pass
+            
+            with CommandStackLock:
+                CommandStack.insert(0,{"user":user, "message":message})
+
+        time.sleep(sleepTime)
 
 print ( "Awaiting Commands..." )
 
@@ -125,8 +145,6 @@ while run:
             outputBox = driver.find_elements_by_css_selector("textarea")[0]
         except:
             pass
-    
-        newData = set ( driver.find_elements_by_class_name("markup") )
         
         if not ( newData == pastData ):
             elementsToPharse = [ x for x in newData - pastData ]
