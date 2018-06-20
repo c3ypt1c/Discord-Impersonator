@@ -49,7 +49,7 @@ class URL:
     try:
         import PrivateChannel
     except:
-        f = open ( "PrivateChannel", "wb" )
+        f = open ( "PrivateChannel.py", "wb" )
         f.write(b"")
         f.close()
         import PrivateChannel
@@ -93,7 +93,7 @@ print ( "Going to dedicated channel..." )
 driver.get(URL.PrivateChannel.URL)
 
 print ( "Waiting for Discord..." )
-time.sleep(10)
+time.sleep(10) #TODO: Find progress!!!!!!
 
 print ( "Gathering past data" )
 pastData = set ( driver.find_elements_by_class_name("markup") )
@@ -145,8 +145,8 @@ while run:
                                     Methods.SendMessage(outputBox, "What? I can't do anything with an empty input *grumble grumble*")
                                 else:
                                     Methods.SendMessage(outputBox, "What? I can't do anything with an empty input, bro.")
-                            elif command == "say":
-                                if len(command) > ( len("say ") + 1) and str(command).count(" ") > 0:
+                            elif command == "say": ##Found bug
+                                if len(command) > ( len("say ") + 1):
                                     if userAdmin:
                                         Methods.SendMessage(outputBox, string(command[4:]))
                                     else:
