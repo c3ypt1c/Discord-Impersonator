@@ -1,11 +1,13 @@
-from selenium import webdriver
-from random import random
-from selenium.webdriver.common.keys import Keys
-import os
+print ( "Creating imports...")
+from selenium import webdriver #For the driver
+from random import random #For the keystrokes
+from selenium.webdriver.common.keys import Keys #For the return key (enter)
+import os #For paths and files
 import time #For timing
+import threading #For command stacks
 
 print ( "This path:", os.getcwd() )
-print ( "Creating classes and function" )
+print ( "Creating classes and function..." )
 
 LoginConfigChanged = False
 try:
@@ -95,11 +97,13 @@ driver.get(URL.PrivateChannel.URL)
 print ( "Waiting for Discord..." )
 time.sleep(10) #TODO: Find progress!!!!!!
 
-print ( "Gathering past data" )
+print ( "Gathering past data..." )
 pastData = set ( driver.find_elements_by_class_name("markup") )
 
 print ( "Awaiting Commands..." )
 outputBox = driver.find_elements_by_css_selector("textarea")[0]
+
+
 
 run = True
 while run:
@@ -110,6 +114,7 @@ while run:
             pass
     
         newData = set ( driver.find_elements_by_class_name("markup") )
+        
         if not ( newData == pastData ):
             elementsToPharse = [ x for x in newData - pastData ]
             pastData = newData
@@ -171,6 +176,12 @@ while run:
                 except UnicodeEncodeError:
                     print ( "UnicodeEncodeError occured" )
                     Methods.SendMessage(outputBox, "UnicodeEncodeError occured! @c3ypt1c#5346")
+                    
+    except KeyboardInterrupt:
+        Methods.SendMessage(outputBox, "Bye! It was cool to be alive for a while :')")
+        print ( "Shutting down" )
+        run = False
+        
     except:
         print ( "Some kind of fatal error occured" )
         Methods.SendMessage(outputBox, "Unknown error occured! Partially restarting! @c3ypt1c#5346")
