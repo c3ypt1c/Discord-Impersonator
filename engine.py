@@ -46,6 +46,9 @@ class Methods:
         print ( "Sending message:", message )
         Methods.HumanTyping(element, message+Keys.RETURN, scale=0.1)
 
+    def nothing(a=None):
+        pass
+
 ##Useful URLs for the bot to use
 class URL:
     class discord:
@@ -108,8 +111,6 @@ print ( "Gathering past data..." )
 pastData = set ( driver.find_elements_by_class_name("markup") )
 
 print ( "Awaiting Commands..." )
-outputBox = driver.find_elements_by_css_selector("textarea")[0]
-
 
 ##Bot fully loaded
 run = True
@@ -117,6 +118,11 @@ while run:
     try:
         try:
             driver.find_elements_by_class_name("new-messages-bar")[0].click()
+        except:
+            pass
+
+        try:
+            outputBox = driver.find_elements_by_css_selector("textarea")[0]
         except:
             pass
     
@@ -139,6 +145,8 @@ while run:
                     print ( "UnicodeEncodeError occured" )
                     Methods.SendMessage(outputBox, "UnicodeEncodeError occured! @c3ypt1c#5346")
                     
+        time.sleep(0.5)
+                    
     except KeyboardInterrupt:
         Methods.SendMessage(outputBox, "Bye! It was cool to be alive for a while :')")
         print ( "Shutting down" )
@@ -147,9 +155,10 @@ while run:
     except:
         print ( "Some kind of fatal error occured" )
         Methods.SendMessage(outputBox, "Unknown error occured! Partially restarting! @c3ypt1c#5346")
+        outputBox = driver.find_elements_by_css_selector("textarea")[0]
         pastData = set ( driver.find_elements_by_class_name("markup") )
         newData = pastData
-    time.sleep(0.5)
+    
         
 driver.close()
 quit()
